@@ -9,16 +9,16 @@ const App = () => {
   const map = useRef(null);
   const markerLayer = useRef(L.layerGroup()); // New reference to store the marker layer
 
-  var baseStationIconGreen = L.icon({
+  const baseStationIconGreen = L.icon({
     iconUrl: "./basestationgreen.png",
     iconSize: [40, 55],
   });
-  var baseStationIconOrange = L.icon({
+  const baseStationIconOrange = L.icon({
     iconUrl: "./basestationOrange.png",
     iconSize: [40, 55],
   });
 
-  var baseStationIconRed = L.icon({
+  const baseStationIconRed = L.icon({
     iconUrl: "./basestationRed.png",
     iconSize: [40, 55],
   });
