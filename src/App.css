@@ -1,0 +1,83 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f7f6;
+  margin: 0;
+  padding: 0;
+}
+
+.App {
+  text-align: center;
+  padding: 20px;
+}
+
+h1 {
+  color: #333;
+  font-family: "Honk";
+}
+
+table {
+  margin: 25px auto;
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 60%;
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 11px 2px 24px 0px rgba(66, 68, 90, 1);
+  overflow: hidden;
+  font-size: 0.8rem;
+}
+
+table thead {
+  border-radius: 15px 15px 0 0;
+}
+
+table thead tr {
+  background-color: #333333;
+  color: #ffffff;
+  text-align: left;
+}
+
+table th,
+table td {
+  padding: 8px 10px;
+  border: 1px solid #dddddd;
+  color: #000000;
+}
+
+table tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+table tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+table tbody tr:last-of-type {
+  border-bottom: 2px solid #333333;
+}
+
+table tbody tr:hover {
+  background-color: #f1f1f1;
+}
