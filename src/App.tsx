@@ -10,7 +10,12 @@ import { ModeToggle } from "./components/mode-toggle";
 const App: React.FC = () => {
   const [data, setData] = useState<DataItem[]>([]);
   const [sortConfig, setSortConfig] = useState<SortConfig | null>(null);
+  const [selectedDevice, setSelectedDevice] = useState<DataItem | null>(null); // Nowy stan dla wybranego urządzenia
 
+  // Funkcja do obsługi kliknięcia urządzenia na mapie
+  const handleDeviceSelection = (device: DataItem) => {
+    setSelectedDevice(device);
+  };
   const sortedData = useMemo(
     () => sortData(data, sortConfig),
     [data, sortConfig]
@@ -50,17 +55,23 @@ const App: React.FC = () => {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <div className="p-8 flex justify-between items-center">
+        {/* Nagłówek */}
         <h1 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">
           <span className="pb-2 border-b px-5">Konsola Operatorska</span>
         </h1>
+        {/* Przełącznik trybu */}
         <ModeToggle />
       </div>
-      <MapComponent data={data} />
+      {/* Mapa */}
+      <MapComponent data={data} onDeviceSelection={handleDeviceSelection} />
+      {/* Tabela */}
       <div className="p-5">
         <TableComponent
           data={sortedData}
           sortConfig={sortConfig}
           requestSort={requestSort}
+          selectedDevice={selectedDevice}
+          onDeviceSelection={handleDeviceSelection}
         />
       </div>
     </ThemeProvider>
