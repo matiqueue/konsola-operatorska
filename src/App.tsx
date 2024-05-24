@@ -1,13 +1,32 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import "./App.css";
 import * as L from "leaflet";
 import "leaflet/dist/leaflet.css"; // Import Leaflet CSS
 
-const App = () => {
-  const [data, setData] = useState([]);
-  const [sortConfig, setSortConfig] = useState(null);
-  const map = useRef(null);
-  const markerLayer = useRef(L.layerGroup()); // New reference to store the marker layer
+interface DataItem {
+  Id: string;
+  Name: string;
+  Type: string;
+  SerialNumber: string;
+  Strength: number;
+  BatteryLevel: number;
+  WorkingMode: string;
+  Position: {
+    Lat: number;
+    Lon: number;
+  };
+}
+
+interface SortConfig {
+  key: keyof DataItem;
+  direction: "ascending" | "descending";
+}
+
+const App: React.FC = () => {
+  const [data, setData] = useState<DataItem[]>([]);
+  const [sortConfig, setSortConfig] = useState<SortConfig | null>(null);
+  const map = useRef<L.Map | null>(null);
+  const markerLayer = useRef(L.layerGroup());
 
   const baseStationIconGreen = L.icon({
     iconUrl: "./basestationgreen.png",
@@ -17,7 +36,6 @@ const App = () => {
     iconUrl: "./basestationOrange.png",
     iconSize: [40, 55],
   });
-
   const baseStationIconRed = L.icon({
     iconUrl: "./basestationRed.png",
     iconSize: [40, 55],
@@ -49,7 +67,7 @@ const App = () => {
     iconSize: [30, 40], // size of the icon
   });
 
-  const sortedData = React.useMemo(() => {
+  const sortedData = useMemo(() => {
     let sortableData = [...data];
     if (sortConfig !== null) {
       sortableData.sort((a, b) => {
@@ -65,9 +83,8 @@ const App = () => {
     return sortableData;
   }, [data, sortConfig]);
 
-  // Dodajemy funkcję do obsługi kliknięcia na nagłówek tabeli
-  const requestSort = (key) => {
-    let direction = "ascending";
+  const requestSort = (key: keyof DataItem) => {
+    let direction: "ascending" | "descending" = "ascending";
     if (
       sortConfig &&
       sortConfig.key === key &&
@@ -84,7 +101,7 @@ const App = () => {
         const response = await fetch("http://localhost:8080/radios", {
           mode: "cors",
         });
-        const data = await response.json();
+        const data: DataItem[] = await response.json();
         setData(data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -110,60 +127,61 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    // Clear the marker layer
-    markerLayer.current.clearLayers();
+    if (map.current) {
+      // Clear the marker layer
+      markerLayer.current.clearLayers();
 
-    // Adding a marker for each data point
-    data.map((item) => {
-      let icon;
-      switch (item.Type) {
-        case "BaseStation":
-          if (item.BatteryLevel * item.Strength > 700) {
-            icon = baseStationIconGreen;
-          } else if (
-            item.BatteryLevel * item.Strength < 700 &&
-            item.BatteryLevel * item.Strength > 400
-          ) {
-            icon = baseStationIconOrange;
-          } else {
-            icon = baseStationIconRed;
-          }
+      // Adding a marker for each data point
+      data.forEach((item) => {
+        let icon;
+        switch (item.Type) {
+          case "BaseStation":
+            if (item.BatteryLevel * item.Strength > 700) {
+              icon = baseStationIconGreen;
+            } else if (
+              item.BatteryLevel * item.Strength < 700 &&
+              item.BatteryLevel * item.Strength > 400
+            ) {
+              icon = baseStationIconOrange;
+            } else {
+              icon = baseStationIconRed;
+            }
+            break;
+          case "Car":
+            if (item.BatteryLevel * item.Strength > 700) {
+              icon = carIconGreen;
+            } else if (
+              item.BatteryLevel * item.Strength < 500 &&
+              item.BatteryLevel * item.Strength > 100
+            ) {
+              icon = carIconOrange;
+            } else {
+              icon = carIconRed;
+            }
+            break;
+          case "Portable":
+            if (item.BatteryLevel * item.Strength > 700) {
+              icon = portableIconGreen;
+            } else if (
+              item.BatteryLevel * item.Strength < 500 &&
+              item.BatteryLevel * item.Strength > 100
+            ) {
+              icon = portableIconOrange;
+            } else {
+              icon = portableIconRed;
+            }
+            break;
+        }
 
-          break;
-        case "Car":
-          if (item.BatteryLevel * item.Strength > 700) {
-            icon = carIconGreen;
-          } else if (
-            item.BatteryLevel * item.Strength < 500 &&
-            item.BatteryLevel * item.Strength > 100
-          ) {
-            icon = carIconOrange;
-          } else {
-            icon = carIconRed;
-          }
-          break;
-        case "Portable":
-          if (item.BatteryLevel * item.Strength > 700) {
-            icon = portableIconGreen;
-          } else if (
-            item.BatteryLevel * item.Strength < 500 &&
-            item.BatteryLevel * item.Strength > 100
-          ) {
-            icon = portableIconOrange;
-          } else {
-            icon = portableIconRed;
-          }
-          break;
-      }
+        const marker = L.marker([item.Position.Lat, item.Position.Lon], {
+          icon: icon,
+        }).bindPopup(`Id: ${item.Id}, Name: ${item.Name}, Type: ${item.Type}`);
+        markerLayer.current.addLayer(marker);
+      });
 
-      const marker = L.marker([item.Position.Lat, item.Position.Lon], {
-        icon: icon,
-      }).bindPopup(`Id: ${item.Id}, Name: ${item.Name}, Type: ${item.Type}`);
-      markerLayer.current.addLayer(marker);
-    });
-
-    // Add the marker layer to the map
-    map.current.addLayer(markerLayer.current);
+      // Add the marker layer to the map
+      map.current.addLayer(markerLayer.current);
+    }
   }, [data]);
 
   return (
