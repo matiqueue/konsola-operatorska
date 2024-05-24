@@ -75,4 +75,4 @@ Aplikacja składa się z dwóch głównych folderów:
 
 ## Podgląd aplikacji
 
-Podgląd aplikacji jest dostępny pod adresem: [konsola-operatorska.vercel.app](https://konsola-operatorska.vercel.app/)
+Podgląd aplikacji jest dostępny pod adresem: [konsola-operatorska.vercel.app](https://konsola-operatorska.vercel.app/).
