@@ -31,7 +31,7 @@ const App: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("localhost:8080/radios");
+        const response = await fetch("http://localhost:8080/radios");
         // const response = await fetch("/example-data.json"); w przypadku osx (bez serwera)
 
         const data: DataItem[] = await response.json();
