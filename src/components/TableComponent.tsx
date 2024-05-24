@@ -39,7 +39,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { DataItem, SortConfig } from "../lib/types"; // Correct import of types
+import { DataItem, SortConfig } from "../lib/types";
 import { useState } from "react";
 
 const columns: ColumnDef<DataItem>[] = [
@@ -183,9 +183,9 @@ const TableComponent: React.FC<TableComponentProps> = ({ data }) => {
       <div className="flex items-center py-4">
         <Input
           placeholder="Filter items..."
-          value={(table.getColumn("Name")?.getFilterValue() as string) ?? ""}
+          value={(table.getColumn("Type")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("Name")?.setFilterValue(event.target.value)
+            table.getColumn("Type")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />

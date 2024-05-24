@@ -1,0 +1,106 @@
+[
+  {
+    "Id": 1,
+    "Name": "KR 1",
+    "Type": "BaseStation",
+    "SerialNumber": "3649-5497-1390-00001",
+    "Strength": 10,
+    "BatteryLevel": 100,
+    "WorkingMode": "Voice",
+    "Position": {
+      "Lat": "50.062",
+      "Lon": "19.906"
+    }
+  },
+  {
+    "Id": 2,
+    "Name": "KR 2",
+    "Type": "BaseStation",
+    "SerialNumber": "9779-9759-6113-00002",
+    "Strength": 10,
+    "BatteryLevel": 100,
+    "WorkingMode": "Idle",
+    "Position": {
+      "Lat": "50.0627082",
+      "Lon": "19.9849566"
+    }
+  },
+  {
+    "Id": 3,
+    "Name": "KR 3",
+    "Type": "Car",
+    "SerialNumber": "5440-8395-7326-00003",
+    "Strength": 0,
+    "BatteryLevel": 47,
+    "WorkingMode": "Voice",
+    "Position": {
+      "Lat": "50.0653083",
+      "Lon": "19.9587974"
+    }
+  },
+  {
+    "Id": 4,
+    "Name": "KR 4",
+    "Type": "Portable",
+    "SerialNumber": "1448-3905-8403-00004",
+    "Strength": 4,
+    "BatteryLevel": 89,
+    "WorkingMode": "Idle",
+    "Position": {
+      "Lat": "50.0072",
+      "Lon": "19.97334"
+    }
+  },
+  {
+    "Id": 5,
+    "Name": "KR 5",
+    "Type": "Portable",
+    "SerialNumber": "7888-2881-6354-00005",
+    "Strength": 1,
+    "BatteryLevel": 84,
+    "WorkingMode": "Data",
+    "Position": {
+      "Lat": "50.02059",
+      "Lon": "19.89174"
+    }
+  },
+  {
+    "Id": 6,
+    "Name": "KR 6",
+    "Type": "Car",
+    "SerialNumber": "5011-4536-6853-00006",
+    "Strength": 0,
+    "BatteryLevel": 54,
+    "WorkingMode": "Idle",
+    "Position": {
+      "Lat": "49.98737",
+      "Lon": "19.9147"
+    }
+  },
+  {
+    "Id": 7,
+    "Name": "KR 7",
+    "Type": "Portable",
+    "SerialNumber": "9272-4459-6744-00007",
+    "Strength": 2,
+    "BatteryLevel": 35,
+    "WorkingMode": "Voice",
+    "Position": {
+      "Lat": "50.0785206",
+      "Lon": "19.9492437"
+    }
+  },
+  {
+    "Id": 8,
+    "Name": "KR 8",
+    "Type": "Portable",
+    "SerialNumber": "8641-6156-4173-00008",
+    "Strength": 6,
+    "BatteryLevel": 4,
+    "WorkingMode": "Idle",
+    "Position": {
+      "Lat": "50.08621",
+      "Lon": "20.00137"
+    }
+  }
+]

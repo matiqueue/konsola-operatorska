@@ -14,10 +14,8 @@ const MapComponent: React.FC<MapComponentProps> = ({ data }) => {
 
   useEffect(() => {
     if (!map.current) {
-      // Initialize map
       map.current = L.map("mapId").setView([50.062, 19.906], 12);
 
-      // Add a tile layer (using OpenStreetMap here)
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: "© OpenStreetMap contributors",
       }).addTo(map.current);
@@ -26,10 +24,8 @@ const MapComponent: React.FC<MapComponentProps> = ({ data }) => {
 
   useEffect(() => {
     if (map.current) {
-      // Clear the marker layer
       markerLayer.current.clearLayers();
 
-      // Adding a marker for each data point
       data.forEach((item) => {
         const icon = getIcon(item.Type, item.BatteryLevel * item.Strength);
         const marker = L.marker([item.Position.Lat, item.Position.Lon], {
@@ -38,7 +34,6 @@ const MapComponent: React.FC<MapComponentProps> = ({ data }) => {
         markerLayer.current.addLayer(marker);
       });
 
-      // Add the marker layer to the map
       map.current.addLayer(markerLayer.current);
     }
   }, [data]);
