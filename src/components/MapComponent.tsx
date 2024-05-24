@@ -6,9 +6,13 @@ import "leaflet/dist/leaflet.css";
 
 interface MapComponentProps {
   data: DataItem[];
+  onDeviceSelection: (device: DataItem) => void; // Nowa funkcja do przekazania stanu wybranego urządzenia
 }
 
-const MapComponent: React.FC<MapComponentProps> = ({ data }) => {
+const MapComponent: React.FC<MapComponentProps> = ({
+  data,
+  onDeviceSelection,
+}) => {
   const map = useRef<L.Map | null>(null);
   const markerLayer = useRef(L.layerGroup());
 
@@ -31,12 +35,13 @@ const MapComponent: React.FC<MapComponentProps> = ({ data }) => {
         const marker = L.marker([item.Position.Lat, item.Position.Lon], {
           icon: icon,
         }).bindPopup(`Id: ${item.Id}, Name: ${item.Name}, Type: ${item.Type}`);
+        marker.on("click", () => onDeviceSelection(item)); // Obsługa kliknięcia na markerze
         markerLayer.current.addLayer(marker);
       });
 
       map.current.addLayer(markerLayer.current);
     }
-  }, [data]);
+  }, [data, onDeviceSelection]);
 
   return (
     <div className="px-40">
