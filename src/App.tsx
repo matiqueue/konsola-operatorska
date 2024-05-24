@@ -6,7 +6,6 @@ import MapComponent from "./components/MapComponent";
 import TableComponent from "./components/TableComponent";
 import { ThemeProvider } from "./components/theme-provider";
 import { ModeToggle } from "./components/mode-toggle";
-import { DataTableDemo } from "./components/DataTableComponent";
 
 const App: React.FC = () => {
   const [data, setData] = useState<DataItem[]>([]);
@@ -66,9 +65,6 @@ const App: React.FC = () => {
             sortConfig={sortConfig}
             requestSort={requestSort}
           />
-        </div>
-        <div className="container mx-auto py-4">
-          <DataTableDemo />
         </div>
       </div>
     </ThemeProvider>
