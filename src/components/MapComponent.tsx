@@ -39,10 +39,11 @@ const MapComponent: React.FC<MapComponentProps> = ({ data }) => {
   }, [data]);
 
   return (
-    <div
-      id="mapId"
-      className="h-96 w-full md:w-3/4 lg:w-1/2 mx-auto border-2 border-gray-300 dark:border-gray-700"
-    ></div>
+    <div className="px-40">
+      <div className="mx-auto border-dashed border-2 border-gray-700 dark:border-gray-400 m-2 p-2 rounded">
+        <div id="mapId" className="h-96 w-full"></div>
+      </div>
+    </div>
   );
 };
 

@@ -49,19 +49,19 @@ const App: React.FC = () => {
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <div className="p-8">
-        <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
-          Konsola Operatorska
-        </h2>
+      <div className="p-8 flex justify-between items-center">
+        <h1 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">
+          <span className="pb-2 border-b px-5">Konsola Operatorska</span>
+        </h1>
         <ModeToggle />
-        <MapComponent data={data} />
-        <div className="p-5">
-          <TableComponent
-            data={sortedData}
-            sortConfig={sortConfig}
-            requestSort={requestSort}
-          />
-        </div>
+      </div>
+      <MapComponent data={data} />
+      <div className="p-5">
+        <TableComponent
+          data={sortedData}
+          sortConfig={sortConfig}
+          requestSort={requestSort}
+        />
       </div>
     </ThemeProvider>
   );
