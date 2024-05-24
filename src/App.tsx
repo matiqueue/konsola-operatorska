@@ -4,6 +4,9 @@ import { DataItem, SortConfig } from "./lib/types";
 import { sortData } from "./lib/sorting";
 import MapComponent from "./components/MapComponent";
 import TableComponent from "./components/TableComponent";
+import { ThemeProvider } from "./components/theme-provider";
+import { ModeToggle } from "./components/mode-toggle";
+import { DataTableDemo } from "./components/DataTableComponent";
 
 const App: React.FC = () => {
   const [data, setData] = useState<DataItem[]>([]);
@@ -46,17 +49,29 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <div>
-      <div className="App">
-        <h1>Konsola operastorska</h1>
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <div className="min-h-screen bg-neutral-100 dark:bg-neutral-1000">
+        <div className="App p-4">
+          <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0 text-neutral-900 dark:text-neutral-100">
+            Konsola Operatorska
+          </h2>
+          <ModeToggle />
+        </div>
+        <div className="container mx-auto py-4 flex justify-center">
+          <MapComponent data={data} />
+        </div>
+        <div className="container mx-auto py-4">
+          <TableComponent
+            data={sortedData}
+            sortConfig={sortConfig}
+            requestSort={requestSort}
+          />
+        </div>
+        <div className="container mx-auto py-4">
+          <DataTableDemo />
+        </div>
       </div>
-      <MapComponent data={data} />
-      <TableComponent
-        data={sortedData}
-        sortConfig={sortConfig}
-        requestSort={requestSort}
-      />
-    </div>
+    </ThemeProvider>
   );
 };
 

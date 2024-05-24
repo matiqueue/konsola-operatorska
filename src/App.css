@@ -1,8 +1,6 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  margin: 0;
+  padding: 0;
 }
 
 @keyframes logo-spin {
@@ -20,6 +18,7 @@
   }
 }
 
+/*
 body {
   font-family: Arial, sans-serif;
   background-color: #f4f7f6;
@@ -31,6 +30,7 @@ body {
   text-align: center;
   padding: 20px;
 }
+
 
 h1 {
   color: #333;
@@ -81,3 +81,4 @@ table tbody tr:last-of-type {
 table tbody tr:hover {
   background-color: #f1f1f1;
 }
+*/

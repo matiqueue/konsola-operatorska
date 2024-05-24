@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import * as L from "leaflet";
-import { DataItem } from "../lib/types.ts";
-import { getIcon } from "../lib/icons.ts";
+import { DataItem } from "../lib/types";
+import { getIcon } from "../lib/icons";
 import "leaflet/dist/leaflet.css";
 
 interface MapComponentProps {
@@ -43,7 +43,12 @@ const MapComponent: React.FC<MapComponentProps> = ({ data }) => {
     }
   }, [data]);
 
-  return <div id="mapId" style={{ height: "400px", width: "800px" }}></div>;
+  return (
+    <div
+      id="mapId"
+      className="h-96 w-full md:w-3/4 lg:w-1/2 mx-auto border-2 border-gray-300 dark:border-gray-700"
+    ></div>
+  );
 };
 
 export default MapComponent;
