@@ -3,7 +3,7 @@ name: Release Tauri App
 on:
   push:
     tags:
-      - 'v*.*.*'
+      - "v*.*.*"
   workflow_dispatch:
 
 jobs:
@@ -22,8 +22,8 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 'lts/*'
-          cache: 'npm'
+          node-version: "lts/*"
+          cache: "npm"
 
       - name: Install dependencies (Ubuntu only)
         if: matrix.os == 'ubuntu-22.04'
@@ -40,7 +40,7 @@ jobs:
       - name: Cache Rust build
         uses: Swatinem/rust-cache@v2
         with:
-          workspaces: './src-tauri -> target'
+          workspaces: "./src-tauri -> target"
 
       - name: Install frontend dependencies
         run: npm install
@@ -48,26 +48,25 @@ jobs:
       - name: Build the Tauri app
         run: npm run tauri build
 
-      - name: Archive artifacts
-        if: startsWith(matrix.os, 'windows')
-        run: |
-          mkdir -p artifacts
-          mv src-tauri/target/release/bundle/msi/*.msi artifacts/
-        if: startsWith(matrix.os, 'macos')
-        run: |
-          mkdir -p artifacts
-          mv src-tauri/target/release/bundle/dmg/*.dmg artifacts/
-        if: startsWith(matrix.os, 'ubuntu')
-        run: |
-          mkdir -p artifacts
-          mv src-tauri/target/release/bundle/deb/*.deb artifacts/
+      - name: Upload Release Assets
+        id: upload_assets
+        uses: actions/upload-artifact@v3
+        with:
+          name: tauri-app
+          path: |
+            src-tauri/target/release/bundle/msi/*.msi
+            src-tauri/target/release/bundle/dmg/*.dmg
+            src-tauri/target/release/bundle/deb/*.deb
 
   release:
     needs: build
     runs-on: ubuntu-22.04
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: tauri-app
+          path: artifacts
 
       - name: Create GitHub Release
         id: create_release
