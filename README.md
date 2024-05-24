@@ -1,30 +1,78 @@
-# React + TypeScript + Vite
+# Konsola Operatorska
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Opis
 
-Currently, two official plugins are available:
+Konsola Operatorska to aplikacja webowa, która fetchuje dane z `localhost:8080/radios` za pomocą REST API i uzupełnia je do tabeli. Dane te są następnie przedstawiane na mapie OpenStreetMap, która prezentuje bliskie urządzenia w okolicy wraz z informacjami takimi jak poziom baterii, nazwa, ID itp. Aplikacja posiada wiele różnych funkcji, takich jak tryb ciemny (dark mode) i tryb jasny (light mode).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Jak uruchomić aplikację
 
-## Expanding the ESLint configuration
+Aby uruchomić aplikację lokalnie, wykonaj poniższe kroki:
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+1. Sklonuj repozytorium:
+   ``` sh
+   git clone https://github.com/Spiritus13/konsola-operatorska.git ./
+   ```
 
-- Configure the top-level `parserOptions` property like this:
+2. Przejdź do katalogu projektu:
+   ``` sh
+   cd konsola-operatorska
+   ```
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+3. Zainstaluj zależności:
+   ``` sh
+   npm install
+   ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+4. Uruchom aplikację w trybie deweloperskim:
+   ``` sh
+   npm run dev
+   ```
+
+## Technologia
+
+Aplikacja została zbudowana z użyciem następujących technologii:
+
+- **Vite**
+- **React**
+- **TypeScript**
+- **schad/cn**
+- **Tailwind CSS**
+- **Vercel**
+
+## Stylizacja
+
+Stylizacja aplikacji została wykonana za pomocą Tailwind CSS oraz zmiennych CSS.
+
+## Autorzy
+
+- Szymon Góral
+- Maksymilian Januszek
+- Patryk Smutek
+- Oliwia Wolak
+- Patryk Kajda
+- Szymon Białek
+- Michał Gomułka
+
+## Przeznaczenie
+
+Aplikacja została stworzona dla firmy Motorola jako część praktyk.
+
+## Pakiety instalacyjne
+
+- **npm**
+- **npx**
+
+## Licencja
+
+Szczegóły dotyczące licencji znajdują się w pliku `LICENSE.md`.
+
+## Struktura aplikacji
+
+Aplikacja składa się z dwóch głównych folderów:
+
+- **public**: zawiera zdjęcia używane w aplikacji.
+- **src**: zawiera assety, komponenty, bibliotekę oraz kod aplikacji.
+
+## Podgląd aplikacji
+
+Podgląd aplikacji jest dostępny pod adresem: [konsola-operatorska.vercel.app](https://konsola-operatorska.vercel.app/)
