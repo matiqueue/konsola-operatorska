@@ -34,7 +34,7 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y libgtk-3-dev
 
       - name: Build Tauri App
-        run: npm run tauri:build
+        run: npm run tauri build
 
       - name: Upload Release Assets
         uses: actions/upload-artifact@v2
