@@ -2,8 +2,8 @@ name: Release Tauri App
 
 on:
   push:
-    branches:
-      - release
+    tags:
+      - "v*.*.*"
   workflow_dispatch:
 
 jobs:
@@ -23,7 +23,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "lts/*"
-          cache: "yarn"
+          cache: "npm"
 
       - name: Install dependencies (Ubuntu only)
         if: matrix.os == 'ubuntu-22.04'
@@ -40,35 +40,70 @@ jobs:
           workspaces: "./src-tauri -> target"
 
       - name: Install frontend dependencies
-        run: yarn install
+        run: npm install
 
       - name: Build the Tauri app
-        uses: tauri-apps/tauri-action@v0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tagName: app-v__VERSION__
-          releaseName: "App v__VERSION__"
-          releaseBody: "See the assets to download this version and install."
-          releaseDraft: true
-          prerelease: false
-          args: ${{ matrix.os == 'macos-latest' && matrix.os == 'macos-latest' && '--target aarch64-apple-darwin' || '' }}
+        run: npm run build
 
-  publish:
+      - name: Create Tauri bundle
+        run: npm run tauri build
+
+  release:
     needs: build
     runs-on: ubuntu-22.04
     steps:
-      - name: Publish release
-        uses: actions/github-script@v6
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          script: |
-            const { data } = await github.rest.repos.createRelease({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              tag_name: `app-v${process.env.npm_package_version}`,
-              name: `App v${process.env.npm_package_version}`,
-              body: 'See the assets to download this version and install.',
-              draft: false,
-              prerelease: false
-            });
-            return data.id;
+          node-version: "lts/*"
+          cache: "npm"
+
+      - name: Install frontend dependencies
+        run: npm install
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset (Windows)
+        if: startsWith(matrix.os, 'windows')
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./src-tauri/target/release/bundle/msi/*.msi
+          asset_name: app-windows.msi
+          asset_content_type: application/x-msi
+
+      - name: Upload Release Asset (macOS)
+        if: startsWith(matrix.os, 'macos')
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./src-tauri/target/release/bundle/dmg/*.dmg
+          asset_name: app-macos.dmg
+          asset_content_type: application/x-apple-diskimage
+
+      - name: Upload Release Asset (Linux)
+        if: startsWith(matrix.os, 'ubuntu')
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./src-tauri/target/release/bundle/deb/*.deb
+          asset_name: app-linux.deb
+          asset_content_type: application/vnd.debian.binary-package
