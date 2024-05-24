@@ -3,7 +3,7 @@ name: Release Tauri App
 on:
   push:
     tags:
-      - "v*.*.*"
+      - 'v*.*.*'
   workflow_dispatch:
 
 jobs:
@@ -22,8 +22,8 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "lts/*"
-          cache: "npm"
+          node-version: 'lts/*'
+          cache: 'npm'
 
       - name: Install dependencies (Ubuntu only)
         if: matrix.os == 'ubuntu-22.04'
@@ -32,21 +32,35 @@ jobs:
           sudo apt-get install -y libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
 
       - name: Set up Rust
-        uses: dtolnay/rust-toolchain@stable
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
 
       - name: Cache Rust build
         uses: Swatinem/rust-cache@v2
         with:
-          workspaces: "./src-tauri -> target"
+          workspaces: './src-tauri -> target'
 
       - name: Install frontend dependencies
         run: npm install
 
       - name: Build the Tauri app
-        run: npm run build
-
-      - name: Create Tauri bundle
         run: npm run tauri build
+
+      - name: Archive artifacts
+        if: startsWith(matrix.os, 'windows')
+        run: |
+          mkdir -p artifacts
+          mv src-tauri/target/release/bundle/msi/*.msi artifacts/
+        if: startsWith(matrix.os, 'macos')
+        run: |
+          mkdir -p artifacts
+          mv src-tauri/target/release/bundle/dmg/*.dmg artifacts/
+        if: startsWith(matrix.os, 'ubuntu')
+        run: |
+          mkdir -p artifacts
+          mv src-tauri/target/release/bundle/deb/*.deb artifacts/
 
   release:
     needs: build
@@ -54,15 +68,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "lts/*"
-          cache: "npm"
-
-      - name: Install frontend dependencies
-        run: npm install
 
       - name: Create GitHub Release
         id: create_release
@@ -75,35 +80,35 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: Upload Release Asset (Windows)
+      - name: Upload Release Assets (Windows)
         if: startsWith(matrix.os, 'windows')
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./src-tauri/target/release/bundle/msi/*.msi
+          asset_path: artifacts/*.msi
           asset_name: app-windows.msi
           asset_content_type: application/x-msi
 
-      - name: Upload Release Asset (macOS)
+      - name: Upload Release Assets (macOS)
         if: startsWith(matrix.os, 'macos')
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./src-tauri/target/release/bundle/dmg/*.dmg
+          asset_path: artifacts/*.dmg
           asset_name: app-macos.dmg
           asset_content_type: application/x-apple-diskimage
 
-      - name: Upload Release Asset (Linux)
+      - name: Upload Release Assets (Linux)
         if: startsWith(matrix.os, 'ubuntu')
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./src-tauri/target/release/bundle/deb/*.deb
+          asset_path: artifacts/*.deb
           asset_name: app-linux.deb
           asset_content_type: application/vnd.debian.binary-package
