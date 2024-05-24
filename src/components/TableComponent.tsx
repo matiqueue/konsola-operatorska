@@ -151,14 +151,24 @@ interface TableComponentProps {
   data: DataItem[];
   sortConfig: SortConfig | null;
   requestSort: (key: keyof DataItem) => void;
+  selectedDevice: DataItem | null; // Dodana definicja dla wybranego urządzenia
+  onDeviceSelection: (device: DataItem) => void; // Funkcja obsługująca zmianę wybranego urządzenia
 }
 
-const TableComponent: React.FC<TableComponentProps> = ({ data }) => {
+const TableComponent: React.FC<TableComponentProps> = ({
+  data,
+  selectedDevice,
+  onDeviceSelection,
+}) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
-
+  const handleRowClick = (device: DataItem) => {
+    if (selectedDevice !== device) {
+      onDeviceSelection(device);
+    }
+  };
   const table = useReactTable({
     data,
     columns,
@@ -181,6 +191,7 @@ const TableComponent: React.FC<TableComponentProps> = ({ data }) => {
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
+        {/* Filtr */}
         <Input
           placeholder="Filter items..."
           value={(table.getColumn("Type")?.getFilterValue() as string) ?? ""}
@@ -189,6 +200,7 @@ const TableComponent: React.FC<TableComponentProps> = ({ data }) => {
           }
           className="max-w-sm"
         />
+        {/* Menu rozwijane kolumn */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
@@ -216,6 +228,7 @@ const TableComponent: React.FC<TableComponentProps> = ({ data }) => {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+      {/* Tabela */}
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -241,7 +254,10 @@ const TableComponent: React.FC<TableComponentProps> = ({ data }) => {
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
+                  data-state={
+                    row.original === selectedDevice ? "selected" : undefined
+                  } // Zaznaczenie wiersza odpowiadającego wybranemu urządzeniu
+                  onClick={() => handleRowClick(row.original)} // Obsługa kliknięcia na wiersz
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
@@ -266,6 +282,7 @@ const TableComponent: React.FC<TableComponentProps> = ({ data }) => {
           </TableBody>
         </Table>
       </div>
+      {/* Licznik wybranych urządzeń i nawigacja */}
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="flex-1 text-sm text-muted-foreground">
           {table.getFilteredSelectedRowModel().rows.length} of{" "}
