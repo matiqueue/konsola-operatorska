@@ -44,8 +44,8 @@ const MapComponent: React.FC<MapComponentProps> = ({
   }, [data, onDeviceSelection]);
 
   return (
-    <div className="mx-auto border-double border-2 border-gray-600 dark:border-gray-300 p-4 rounded-tr-3xl rounded-bl-3xl rounded-tl rounded-br  hover:border-solid">
-      <div id="mapId" className="h-96 w-full"></div>
+    <div className="mx-auto border-double border-2 border-gray-600 dark:border-gray-300 p-4 rounded-tr-3xl rounded-bl-3xl rounded-tl-lg rounded-br-lg  hover:border-solid">
+      <div id="mapId" className="h-96 w-full rounded-xl"></div>
     </div>
   );
 };
