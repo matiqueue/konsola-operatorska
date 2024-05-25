@@ -82,6 +82,7 @@ const App: React.FC = () => {
           <ModeToggle />
         </div>
       </div>
+
       {showMap && (
         <div className="w-8/12 mx-auto">
           <div className="pb-4 transition-opacity duration-500 opacity-100">
@@ -97,7 +98,7 @@ const App: React.FC = () => {
           <MapComponent data={data} onDeviceSelection={handleDeviceSelection} />
         </div>
       )}
-      <div className={`mx-auto w-11/12 ${showMap ? "mt-10" : ""}`}>
+      <div className="mx-auto w-11/12">
         <TableComponent
           data={sortedData}
           sortConfig={sortConfig}
