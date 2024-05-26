@@ -11,7 +11,7 @@ const App: React.FC = () => {
   const [data, setData] = useState<DataItem[]>([]);
   const [sortConfig, setSortConfig] = useState<SortConfig | null>(null);
   const [selectedDevice, setSelectedDevice] = useState<DataItem | null>(null); // Nowy stan dla wybranego urządzenia
-  
+
   const handleDeviceSelection = (device: DataItem) => {
     setSelectedDevice(device);
   };
