@@ -1,5 +1,8 @@
 "use client";
 
+import { getIconBattery, getIconType } from "../lib/icons";
+import { getIconStrenght } from "../lib/icons";
+
 import * as React from "react";
 import {
   CaretSortIcon,
@@ -82,8 +85,17 @@ const columns: ColumnDef<DataItem>[] = [
   },
   {
     accessorKey: "Type",
-    header: "Type",
-    cell: ({ row }) => <div className="capitalize">{row.getValue("Type")}</div>,
+    header: () => <div className="text-center">Type</div>,
+    cell: ({ row }) => {
+      const type = String(row.getValue("Type"));
+      const icon = getIconType(type);
+      console.log(row.id, "to", type);
+      return (
+        <div className="flex justify-center">
+          <img src={icon} alt="Image" width="40" height="auto" />
+        </div>
+      );
+    },
   },
   {
     accessorKey: "SerialNumber",
@@ -94,20 +106,29 @@ const columns: ColumnDef<DataItem>[] = [
   },
   {
     accessorKey: "BatteryLevel",
-    header: () => <div className="text-right">Battery Level</div>,
+    header: () => <div className="text-center">Battery Level</div>,
     cell: ({ row }) => {
       const batteryLevel = parseFloat(row.getValue("BatteryLevel"));
-
-      return <div className="text-right font-medium">{batteryLevel}</div>;
+      const icon = getIconBattery(batteryLevel);
+      return (
+        <div className="flex justify-center">
+          <img src={icon} alt="Image" width="40" height="auto" />
+        </div>
+      );
     },
   },
   {
     accessorKey: "Strength",
-    header: () => <div className="text-right">Strength</div>,
+    header: () => <div className="text-center">Strength</div>,
     cell: ({ row }) => {
       const strength = parseFloat(row.getValue("Strength"));
+      const iconstrenght = getIconStrenght(strength);
 
-      return <div className="text-right font-medium">{strength}</div>;
+      return (
+        <div className="flex justify-center">
+          <img src={iconstrenght} alt="Image" width="40" height="auto" />
+        </div>
+      );
     },
   },
   {

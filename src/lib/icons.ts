@@ -117,3 +117,29 @@ export const getIcon = (type: string, value: number, isSelected: boolean) => {
       return baseStationIconRed;
   }
 };
+export function getIconBattery(batterylevel: number) {
+  if (batterylevel > 90 && batterylevel <= 100) return "./batteryhigh.png";
+  else if (batterylevel <= 90 && batterylevel > 75)
+    return "./batterymidhigh.png";
+  else if (batterylevel <= 75 && batterylevel > 50) return "./batterymid.png";
+  else if (batterylevel <= 50 && batterylevel > 30) return "./batterylow.png";
+  else return "./batteryverylow.png";
+}
+export function getIconStrenght(strenghtlevel: number) {
+  if (strenghtlevel >= 8 && strenghtlevel <= 10) return "./signalhigh.png";
+  else if (strenghtlevel <= 8 && strenghtlevel >= 6)
+    return "./signalmidhigh.png";
+  else if (strenghtlevel <= 6 && strenghtlevel >= 4) return "./signalmid.png";
+  else if (strenghtlevel <= 4 && strenghtlevel >= 2) return "./signallow.png";
+  else return "./signalverylow.png";
+}
+export function getIconType(name: string) {
+  switch (name) {
+    case "BaseStation":
+      return "./basestation.png";
+    case "Car":
+      return "./car.png";
+    case "Portable":
+      return "./portable.png";
+  }
+}
