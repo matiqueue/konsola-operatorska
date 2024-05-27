@@ -89,7 +89,6 @@ const columns: ColumnDef<DataItem>[] = [
     cell: ({ row }) => {
       const type = String(row.getValue("Type"));
       const icon = getIconType(type);
-      console.log(row.id, "to", type);
       return (
         <div className="flex justify-center">
           <img src={icon} alt="Image" width="40" height="auto" />
