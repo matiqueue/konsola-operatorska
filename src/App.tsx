@@ -96,7 +96,11 @@ const App: React.FC = () => {
       )}
       {!showMap && (
         <div style={{ display: "none" }}>
-          <MapComponent data={data} onDeviceSelection={handleDeviceSelection} selectedDevice={selectedDevice} />
+          <MapComponent
+            data={data}
+            onDeviceSelection={handleDeviceSelection}
+            selectedDevice={selectedDevice}
+          />
         </div>
       )}
       <div className="mx-auto w-11/12">
