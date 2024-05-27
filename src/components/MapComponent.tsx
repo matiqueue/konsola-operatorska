@@ -3,6 +3,7 @@ import * as L from "leaflet";
 import { DataItem } from "../lib/types";
 import { getIcon } from "../lib/icons";
 import "leaflet/dist/leaflet.css";
+import { Button } from "./ui/button";
 
 interface MapComponentProps {
   data: DataItem[];
@@ -106,21 +107,24 @@ const MapComponent: React.FC<MapComponentProps> = ({
   }, [selectedDevice]);
 
   return (
-    <div className="mx-auto border-double border-2 border-gray-600 dark:border-gray-300 p-4 rounded-tr-3xl rounded-bl-3xl rounded-tl-lg rounded-br-lg  hover:border-solid">
-      <div id="mapId" className="h-96 w-full rounded-xl"></div>
-      <button
-        onClick={removeLines}
-        className="mt-2 p-2 bg-blue-500 text-white rounded"
-      >
-        Usuń wszystkie linie
-      </button>
-      <p className="mt-2">
-        Całkowita odległość: {totalDistance.toFixed(2)} metrów
-      </p>
-      <p className="mt-2">
-        Aktualna odległość: {currentDistance.toFixed(2)} metrów
-      </p>
-    </div>
+    <main>
+      <div className="mx-auto border-double border-2 border-gray-600 dark:border-gray-300 p-4 rounded-tr-3xl rounded-bl-3xl rounded-tl-lg rounded-br-lg  hover:border-solid">
+        <div id="mapId" className="h-96 w-full rounded-xl"></div>
+      </div>
+      <div className="p-5 text-center">
+        <Button variant="outline" onClick={removeLines} className="">
+          Usuń wszystkie linie
+        </Button>
+        <div className="pt-5 flex justify-center items-center border-x-2 w-8/12 mx-auto text-center h-10">
+          <p className="px-5">
+            Całkowita odległość: {totalDistance.toFixed(2)} metróww
+          </p>
+          <p className="px-5">
+            Aktualna odległość: {currentDistance.toFixed(2)} metrów
+          </p>
+        </div>
+      </div>
+    </main>
   );
 };
 
